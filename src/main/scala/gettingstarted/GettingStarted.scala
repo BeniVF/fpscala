@@ -39,6 +39,7 @@ object PolymorphicFunctions {
   // Exercise 2: Implement a polymorphic function to check whether
   // an `Array[A]` is sorted
   def isSorted[A](as: Array[A], gt: (A, A) => Boolean): Boolean = {
+    @tailrec
     def go(i: Int, as: Array[A]): Boolean = {
       if (as.isEmpty || as.size == 1)
         true
