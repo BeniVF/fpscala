@@ -46,4 +46,9 @@ object Tree {
     }
   }
 
+  def map[A, B](tree: Tree[A])(f: A => B): Tree[B] = tree match {
+    case Leaf(a) => Leaf(f(a))
+    case Branch(left, right) => Branch(map(left)(f), map(right)(f))
+  }
+
 }
