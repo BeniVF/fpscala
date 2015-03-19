@@ -22,9 +22,9 @@ object Tree {
       case (Some(_), None) => first
       case (None, Some(_)) => second
     }
-    def go(tree: Tree[Int], currentMax: Option[Int] ): Option[Int] = (tree, currentMax) match {
+    def go(tree: Tree[Int], currentMax: Option[Int]): Option[Int] = (tree, currentMax) match {
       case (Leaf(value), None) => Some(value)
-      case (Leaf(value), Some(maxValue)) if value>maxValue  => Some(value)
+      case (Leaf(value), Some(maxValue)) if value > maxValue => Some(value)
       case (Branch(left, right), maxOption) => {
         val maxLeft = maximum(left)
         val maxRight = maximum(right)
@@ -33,6 +33,17 @@ object Tree {
       case _ => currentMax
     }
     go(tree, None)
+  }
+
+
+  def depth[A](tree: Tree[A]): Int = tree match {
+    case Leaf(_) => 1
+    case Branch(left, right) => {
+      val leftDepth = depth(left)
+      val rightDepth = depth(right)
+      val currentDepth = if (leftDepth > rightDepth) leftDepth else rightDepth
+      currentDepth + 1
+    }
   }
 
 }
