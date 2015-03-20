@@ -15,10 +15,10 @@ class TreeSpec extends FlatSpec {
   }
 
   it should "get the max" in {
-    maximum(Leaf(1)) shouldBe Some(1)
-    maximum(Branch(Leaf(1), Leaf(2))) shouldBe Some(2)
-    maximum(Branch(Branch(Leaf(1), Leaf(5)), Branch(Leaf(1), Leaf(2)))) shouldBe Some(5)
-    maximum(Branch(Branch(Leaf(-1), Leaf(-5)), Branch(Leaf(-1), Leaf(-8)))) shouldBe Some(-1)
+    maximum(Leaf(1)) shouldBe 1
+    maximum(Branch(Leaf(1), Leaf(2))) shouldBe 2
+    maximum(Branch(Branch(Leaf(1), Leaf(5)), Branch(Leaf(1), Leaf(2)))) shouldBe 5
+    maximum(Branch(Branch(Leaf(-1), Leaf(-5)), Branch(Leaf(-1), Leaf(-8)))) shouldBe -1
   }
 
   it should "get the depth" in {
