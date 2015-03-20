@@ -52,11 +52,10 @@ object Tree {
   }
 
 
-  def fold[A, B](tree: Tree[A], z: B)(f: (A, B) => B): B = tree match {
-    case Leaf(value) => f(value, z)
+  def fold[A, B](tree: Tree[A])(f: A => B)(g: (B,B) => B): B = tree match {
+    case Leaf(value) => f(value)
     case Branch(left, right) => {
-      val leftDepth = fold(left,z)(f)
-      fold(right,leftDepth)(f)
+      g(fold(left)(f)(g), fold(right)(f)(g))
     }
   }
 

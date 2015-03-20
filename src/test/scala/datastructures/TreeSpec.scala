@@ -36,10 +36,10 @@ class TreeSpec extends FlatSpec {
   }
 
   it should "fold the tree" in {
-    val f = (a: Int, b: Int) => b * a
-    fold(Leaf(4), 2)(f) shouldBe 8
-
-    fold(Branch(Leaf(5), Leaf(2)), 1)(f) shouldBe 10
+    val f = (a: Int) => a * 2
+    val g = (b1: Int, b2:Int) => b1+b2
+    fold(Leaf(4))(f)(g) shouldBe 8
+    fold(Branch(Leaf(5), Leaf(2)))(f)(g) shouldBe 14
 
   }
 
