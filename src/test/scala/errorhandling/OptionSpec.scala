@@ -29,4 +29,15 @@ class OptionSpec extends FlatSpec {
 
   }
 
+  it should "filter" in {
+    Some(2).filter(_%2==0) shouldBe Some(2)
+    Some(3).filter(_%2==0) shouldBe None
+    None.filter(_ => true) shouldBe None
+  }
+
+  it should "orElse" in {
+    None orElse Some(1) shouldBe Some(1)
+    Some(2) orElse Some(1) shouldBe Some(2)
+  }
+
 }
