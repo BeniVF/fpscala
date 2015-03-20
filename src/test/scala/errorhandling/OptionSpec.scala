@@ -4,6 +4,7 @@ import org.scalatest.{Matchers, FlatSpec}
 import Matchers._
 
 class OptionSpec extends FlatSpec {
+  import Option._
   it should "get or else the value" in {
     None.getOrElse("No value!") shouldBe "No value!"
     Some(1).getOrElse(3) shouldBe 1
@@ -38,6 +39,11 @@ class OptionSpec extends FlatSpec {
   it should "orElse" in {
     None orElse Some(1) shouldBe Some(1)
     Some(2) orElse Some(1) shouldBe Some(2)
+  }
+
+  it should "map2" in {
+    map2(Some(2), Some(5))(_ * _) shouldBe Some(10)
+    map2[Int, Int, Int](Some(2), None)(_ * _) shouldBe None
   }
 
 }
