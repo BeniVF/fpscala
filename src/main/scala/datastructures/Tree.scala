@@ -10,10 +10,7 @@ case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 
 object Tree {
 
-  def size[A](tree: Tree[A]): Int = tree match {
-    case Leaf(_) => 1
-    case Branch(left, right) => 1 + size(left) + size(right)
-  }
+  def size[A](tree: Tree[A]): Int = fold(tree)(_=> 1)( _ + _ + 1)
 
   def maximum(tree: Tree[Int]): Int = fold(tree)(identity)(_ max _ )
 
