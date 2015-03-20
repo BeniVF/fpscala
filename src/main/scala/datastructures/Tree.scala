@@ -17,7 +17,7 @@ object Tree {
 
   def depth[A](tree: Tree[A]): Int = fold(tree)(_=> 1)((l,r) => (l max r) + 1)
 
-  def map[A, B](tree: Tree[A])(f: A => B): Tree[B] = fold[A, Tree[B]](tree)(a => Leaf(f(a)))((l, r) => Branch(l,r))
+  def map[A, B](tree: Tree[A])(f: A => B): Tree[B] = fold[A, Tree[B]](tree)(a => Leaf(f(a)))(Branch(_,_))
 
 
   def fold[A, B](tree: Tree[A])(f: A => B)(g: (B,B) => B): B = tree match {
