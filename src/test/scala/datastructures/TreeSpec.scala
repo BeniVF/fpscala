@@ -22,9 +22,9 @@ class TreeSpec extends FlatSpec {
   }
 
   it should "get the depth" in {
-    depth(Leaf(1)) shouldBe 1
-    depth(Branch(Leaf(1), Leaf(2))) shouldBe 2
-    depth(Branch(Branch(Leaf(1), Leaf(5)), Leaf(2))) shouldBe 3
+    depth(Leaf(1)) shouldBe 0
+    depth(Branch(Leaf(1), Leaf(2))) shouldBe 1
+    depth(Branch(Branch(Leaf(1), Leaf(5)), Leaf(2))) shouldBe 2
   }
 
   it should "map the tree" in {

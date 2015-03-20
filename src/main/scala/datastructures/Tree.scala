@@ -14,7 +14,7 @@ object Tree {
 
   def maximum(tree: Tree[Int]): Int = fold(tree)(identity)(_ max _ )
 
-  def depth[A](tree: Tree[A]): Int = fold(tree)(_=> 1)((l,r) => (l max r) + 1)
+  def depth[A](tree: Tree[A]): Int = fold(tree)(_=> 0)((l,r) => (l max r) + 1)
 
   def map[A, B](tree: Tree[A])(f: A => B): Tree[B] = fold[A, Tree[B]](tree)(a => Leaf(f(a)))(Branch(_,_))
 
