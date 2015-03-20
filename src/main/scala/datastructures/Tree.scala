@@ -18,15 +18,7 @@ object Tree {
   def maximum(tree: Tree[Int]): Int = fold(tree)(identity)(_ max _ )
 
 
-  def depth[A](tree: Tree[A]): Int = tree match {
-    case Leaf(_) => 1
-    case Branch(left, right) => {
-      val leftDepth = depth(left)
-      val rightDepth = depth(right)
-      val currentDepth = if (leftDepth > rightDepth) leftDepth else rightDepth
-      currentDepth + 1
-    }
-  }
+  def depth[A](tree: Tree[A]): Int = fold(tree)(_=> 1)((l,r) => (l max r) + 1)
 
   def map[A, B](tree: Tree[A])(f: A => B): Tree[B] = tree match {
     case Leaf(a) => Leaf(f(a))
