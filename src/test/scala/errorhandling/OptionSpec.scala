@@ -46,4 +46,12 @@ class OptionSpec extends FlatSpec {
     map2[Int, Int, Int](Some(2), None)(_ * _) shouldBe None
   }
 
+  it should "sequence" in {
+    sequence(List(None)) shouldBe None
+    sequence(List()) shouldBe Some(List())
+    sequence(List(Some(1),Some(2), None)) shouldBe None
+    sequence(List(Some(1),Some(2), Some(3))) shouldBe Some(List(1,2,3))
+
+  }
+
 }
