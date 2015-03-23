@@ -57,8 +57,9 @@ class OptionSpec extends FlatSpec {
 
   it should "traverse" in {
     traverse(List())(identity) shouldBe Some(List())
-    traverse(List(2, 4))(x => if (x%2==0) Some(x*x) else None) shouldBe Some(List(4, 16))
-    traverse(List(1, 2, 4))(x => if (x%2==0) Some(x*x) else None) shouldBe None
+    val f = (x: Int) => if (x % 2 == 0) Some(x * x) else None
+    traverse(List(2, 4))(f) shouldBe Some(List(4, 16))
+    traverse(List(1, 2, 4))(f) shouldBe None
 
   }
 
