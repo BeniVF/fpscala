@@ -25,7 +25,11 @@ class EitherSpec extends FlatSpec {
       y <- problem("A problem!!!")
     } yield x + y
     error shouldBe error
+  }
 
+  it should "orElse" in {
+    Left("this is a problem") orElse Right(21) shouldBe Right(21)
+    Right(44) orElse Right(21) shouldBe Right(44)
   }
 
 }
