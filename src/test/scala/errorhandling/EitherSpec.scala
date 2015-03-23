@@ -66,5 +66,10 @@ class EitherSpec extends FlatSpec {
     traverse(List(3,5,6))(x => if (x%2==0) Right(x.toString) else Left(s"Even number: $x")) shouldBe Left("Even number: 3")
   }
 
-}
+  it should "sequence" in {
+    sequence(List()) shouldBe Right(List())
+    sequence(List(Right(1), Right(2), Right(5))) shouldBe Right(List(1, 2, 5))
+    sequence(List(Right(1), Left("An error"), Right(5))) shouldBe Left("An error")
+  }
 
+}

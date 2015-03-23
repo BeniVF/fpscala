@@ -35,7 +35,7 @@ object Either {
     }
   }
 
-  def sequence[E,A](es: List[Either[E,A]]): Either[E,List[A]] = sys.error("todo")
+  def sequence[E,A](es: List[Either[E,A]]): Either[E,List[A]] = traverse(es)(identity)
 
   def mean(xs: IndexedSeq[Double]): Either[String, Double] =
     if (xs.isEmpty)
