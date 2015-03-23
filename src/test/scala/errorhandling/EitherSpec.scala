@@ -11,4 +11,21 @@ class EitherSpec extends FlatSpec {
     Right(1).map(_.toString) shouldBe Right("1")
   }
 
+  it should "flatMap" in {
+    val result = for {
+      x <- Right(5)
+      y <- Right(10)
+    } yield x + y
+    result shouldBe Right(15)
+    def problem(problem: String): Either[String, Int] = {
+      Left(problem)
+    }
+    val error = for {
+      x <- Right(5)
+      y <- problem("A problem!!!")
+    } yield x + y
+    error shouldBe error
+
+  }
+
 }
