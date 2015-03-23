@@ -4,7 +4,9 @@ import org.scalatest.{Matchers, FlatSpec}
 import Matchers._
 
 class OptionSpec extends FlatSpec {
+
   import Option._
+
   it should "get or else the value" in {
     None.getOrElse("No value!") shouldBe "No value!"
     Some(1).getOrElse(3) shouldBe 1
@@ -13,26 +15,26 @@ class OptionSpec extends FlatSpec {
 
   it should "map" in {
     None.map(identity) shouldBe None
-    Some(3).map(_*10) shouldBe Some(30)
-    Some(3).map(_+10) shouldBe Some(13)
+    Some(3).map(_ * 10) shouldBe Some(30)
+    Some(3).map(_ + 10) shouldBe Some(13)
   }
 
   it should "flat map" in {
     for {
-      x <-Some(1)
-      y <-Some(2)
-    } yield x+y shouldBe 3
+      x <- Some(1)
+      y <- Some(2)
+    } yield x + y shouldBe 3
 
     for {
-      x <-Some(1)
-      y <-None
-    } yield x+y shouldBe None
+      x <- Some(1)
+      y <- None
+    } yield x + y shouldBe None
 
   }
 
   it should "filter" in {
-    Some(2).filter(_%2==0) shouldBe Some(2)
-    Some(3).filter(_%2==0) shouldBe None
+    Some(2).filter(_ % 2 == 0) shouldBe Some(2)
+    Some(3).filter(_ % 2 == 0) shouldBe None
     None.filter(_ => true) shouldBe None
   }
 
@@ -49,8 +51,14 @@ class OptionSpec extends FlatSpec {
   it should "sequence" in {
     sequence(List(None)) shouldBe None
     sequence(List()) shouldBe Some(List())
-    sequence(List(Some(1),Some(2), None)) shouldBe None
-    sequence(List(Some(1),Some(2), Some(3))) shouldBe Some(List(1,2,3))
+    sequence(List(Some(1), Some(2), None)) shouldBe None
+    sequence(List(Some(1), Some(2), Some(3))) shouldBe Some(List(1, 2, 3))
+  }
+
+  it should "traverse" in {
+    traverse(List())(identity) shouldBe Some(List())
+    traverse(List(2, 4))(x => if (x%2==0) Some(x*x) else None) shouldBe Some(List(4, 16))
+    traverse(List(1, 2, 4))(x => if (x%2==0) Some(x*x) else None) shouldBe None
 
   }
 
