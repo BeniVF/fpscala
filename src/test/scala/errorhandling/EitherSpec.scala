@@ -6,6 +6,7 @@ import Matchers._
 
 
 class EitherSpec extends FlatSpec {
+  import Either._
 
   case class Person(name: Name, age: Age)
   sealed class Name(val value: String)
@@ -56,6 +57,13 @@ class EitherSpec extends FlatSpec {
         name.value shouldBe "John"
         age.value shouldBe 10
     }
+  }
+
+  it should "traverse" in {
+    traverse(List())(identity) shouldBe Right(List())
+    traverse(List(1,2,3))(x => Right(x.toString)) shouldBe Right(List("1", "2", "3"))
+    traverse(List(9,8,8))(x => Left("Always an error")) shouldBe Left("Always an error")
+    traverse(List(3,5,6))(x => if (x%2==0) Right(x.toString) else Left(s"Even number: $x")) shouldBe Left("Even number: 3")
   }
 
 }
