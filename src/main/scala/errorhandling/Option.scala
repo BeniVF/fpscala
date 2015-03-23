@@ -67,5 +67,11 @@ object Option {
       }
   }
 
-  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = sequence(a.map(a => f(a)))
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = a.foldLeft[Option[List[B]]](Some(List())) {
+    case (result, current) =>
+      (result, f(current)) match {
+        case (Some(list), Some(value)) => Some(list :+ value)
+        case _ => None
+      }
+  }
 }
