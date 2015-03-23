@@ -1,6 +1,5 @@
 package errorhandling
 
-import org.scalactic.TolerantNumerics
 import org.scalatest.{Matchers, FlatSpec}
 import Matchers._
 
