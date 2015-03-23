@@ -32,4 +32,9 @@ class EitherSpec extends FlatSpec {
     Right(44) orElse Right(21) shouldBe Right(44)
   }
 
+  it should "map2" in {
+    Right(44).map2(Left(21))(_+_) shouldBe Left(21)
+    Right(44).map2(Right(21))(_+_) shouldBe Right(65)
+  }
+
 }
