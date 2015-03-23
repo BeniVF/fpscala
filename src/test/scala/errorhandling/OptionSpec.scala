@@ -1,5 +1,6 @@
 package errorhandling
 
+import org.scalactic.TolerantNumerics
 import org.scalatest.{Matchers, FlatSpec}
 import Matchers._
 
@@ -32,6 +33,13 @@ class OptionSpec extends FlatSpec {
 
   }
 
+  it should "calculate the variance" in {
+    variance(Seq()) shouldBe None
+    variance(Seq(2, 2)) shouldBe Some(0.0)
+
+    variance(Seq(1, 10, 20)).getOrElse(-10000) === 60.2 +- 0.1
+  }
+
   it should "filter" in {
     Some(2).filter(_ % 2 == 0) shouldBe Some(2)
     Some(3).filter(_ % 2 == 0) shouldBe None
@@ -60,7 +68,6 @@ class OptionSpec extends FlatSpec {
     val f = (x: Int) => if (x % 2 == 0) Some(x * x) else None
     traverse(List(2, 4))(f) shouldBe Some(List(4, 16))
     traverse(List(1, 2, 4))(f) shouldBe None
-
   }
 
 }
