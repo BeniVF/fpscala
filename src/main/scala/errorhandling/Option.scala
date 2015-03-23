@@ -59,13 +59,7 @@ object Option {
     y <- b
   } yield f(x, y)
 
-  def sequence[A](a: List[Option[A]]): Option[List[A]] = a.foldLeft[Option[List[A]]](Some(List())) {
-    case (result, current) =>
-      (result, current) match {
-        case (Some(list), Some(value)) => Some(list :+ value)
-        case _ => None
-      }
-  }
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = traverse(a)(identity)
 
   def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = a.foldLeft[Option[List[B]]](Some(List())) {
     case (result, current) =>
