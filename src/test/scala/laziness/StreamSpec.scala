@@ -26,4 +26,10 @@ class StreamSpec extends FlatSpec{
     ones.takeWhile(_ => true).take(1).toList shouldBe List(1)
   }
 
+  it should "forAll" in {
+    Stream().forAll( _ => false) shouldBe true
+    Stream(1, 2, 3).forAll( _ => false) shouldBe false
+    Stream(2, 4, 6, 8).forAll(_%2==0) shouldBe true
+  }
+
 }

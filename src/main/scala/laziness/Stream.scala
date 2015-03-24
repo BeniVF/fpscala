@@ -35,7 +35,7 @@ trait Stream[+A] {
     case _ => Empty
   }
 
-  def forAll(p: A => Boolean): Boolean = sys.error("todo")
+  def forAll(p: A => Boolean): Boolean = foldRight(true){case (current, result) => result && p(current)}
 
   def headOption: Option[A] = sys.error("todo")
 
