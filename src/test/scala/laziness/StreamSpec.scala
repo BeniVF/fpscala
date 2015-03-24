@@ -32,4 +32,10 @@ class StreamSpec extends FlatSpec{
     Stream(2, 4, 6, 8).forAll(_%2==0) shouldBe true
   }
 
+  it should "headOption" in {
+    Stream().headOption shouldBe None
+    Stream(4, 5).headOption shouldBe Some(4)
+    ones.headOption shouldBe Some(1)
+  }
+
 }
