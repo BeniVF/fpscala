@@ -43,6 +43,7 @@ trait Stream[+A] {
   }
 
   def map[B](f: A => B): Stream[B] = foldRight[Stream[B]](Empty){case (current : A, result) => cons(f(current), result)}
+  def filter(f: A => Boolean): Stream[A] = foldRight[Stream[A]](Empty){case (current : A, result) => if (f(current)) cons(current, result) else result}
 
   // 5.7 map, filter, append, flatmap using foldRight. Part of the exercise is
   // writing your own function signatures.

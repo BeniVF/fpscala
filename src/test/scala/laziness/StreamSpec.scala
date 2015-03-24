@@ -43,4 +43,10 @@ class StreamSpec extends FlatSpec{
     Stream(4, 5).map(_*2).toList shouldBe List(8, 10)
   }
 
+  it should "filter" in {
+    Stream().filter(_ => true).toList shouldBe List()
+    Stream(4, 9).filter(_%3 ==0).toList shouldBe List(9)
+    Stream(4, 9, 8).filter(_%2 ==0).toList shouldBe List(4, 8)
+  }
+
 }
