@@ -38,4 +38,9 @@ class StreamSpec extends FlatSpec{
     ones.headOption shouldBe Some(1)
   }
 
+  it should "map" in {
+    Stream().map(identity).toList shouldBe List()
+    Stream(4, 5).map(_*2).toList shouldBe List(8, 10)
+  }
+
 }
