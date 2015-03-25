@@ -49,4 +49,12 @@ class StreamSpec extends FlatSpec{
     Stream(4, 9, 8).filter(_%2 ==0).toList shouldBe List(4, 8)
   }
 
+  it should "append" in {
+    (Stream() append Stream()).toList shouldBe List()
+    (Stream(1,2) append Stream()).toList shouldBe List(1, 2)
+    (Stream(1,2) append Stream(3)).toList shouldBe List(1, 2, 3)
+    (Stream(5,6) append Stream(9,10,23)).toList shouldBe List(5,6,9,10,23)
+  }
+
+
 }
