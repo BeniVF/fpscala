@@ -21,10 +21,8 @@ class StreamSpec extends FlatSpec {
   }
 
   it should "take while a condition" in {
-    Stream().takeWhile(_ => false).toList shouldBe List()
     Stream(1, 2, 3, 4).takeWhile(_ % 2 != 0).toList shouldBe List(1)
     Stream(2, 4, 6, 1).takeWhile(_ % 2 == 0).toList shouldBe List(2, 4, 6)
-    ones.takeWhile(_ => true).take(1).toList shouldBe List(1)
   }
 
   it should "forAll" in {
