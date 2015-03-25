@@ -62,8 +62,10 @@ class StreamSpec extends FlatSpec {
       y <- Stream(4, 5, 6)
     } yield x + y
     result.toList shouldBe List(5, 6, 7, 6, 7, 8)
-
   }
 
 
+  it should "create an infinite constant" in {
+    constant(10).take(2).toList shouldBe List(10, 10)
+  }
 }

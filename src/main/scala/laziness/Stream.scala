@@ -55,7 +55,7 @@ trait Stream[+A] {
       f(current) append result
   }
 
-  def filter(f: A => Boolean): Stream[A] = foldRight[Stream[A]](Empty) {
+  def filter(f: A => Boolean): Stream[A] = foldRight(empty[A]) {
     case (current: A, result) =>
       if (f(current)) cons(current, result) else result
   }
@@ -85,6 +85,8 @@ object Stream {
     else cons(as.head, apply(as.tail: _*))
 
   val ones: Stream[Int] = Stream.cons(1, ones)
+
+  def constant[A](a: A): Stream[A] = Stream.cons(a, constant(a))
 
   def from(n: Int): Stream[Int] = sys.error("todo")
 
