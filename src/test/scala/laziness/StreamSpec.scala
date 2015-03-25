@@ -64,8 +64,13 @@ class StreamSpec extends FlatSpec {
     result.toList shouldBe List(5, 6, 7, 6, 7, 8)
   }
 
-
   it should "create an infinite constant" in {
     constant(10).take(2).toList shouldBe List(10, 10)
   }
+
+  it should "create an infinite stream of integers" in {
+    from(0).take(5).toList shouldBe List(0, 1, 2, 3, 4)
+    from(10).take(2).toList shouldBe List(10, 11)
+  }
+
 }
