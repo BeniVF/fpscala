@@ -4,8 +4,8 @@ import Stream._
 
 trait Stream[+A] {
 
-//  def uncons: Option[(A, Stream[A])]
-//  def isEmpty: Boolean = uncons.isEmpty
+  //  def uncons: Option[(A, Stream[A])]
+  //  def isEmpty: Boolean = uncons.isEmpty
 
   def foldRight[B](z: => B)(f: (A, => B) => B): B = // The arrow `=>` in front of the argument type `B` means that the function `f` takes its second argument by name and may choose not to evaluate it.
     this match {
@@ -50,12 +50,17 @@ trait Stream[+A] {
       cons(f(current), result)
   }
 
+  def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight[Stream[B]](Empty) {
+    case (current, result) =>
+      f(current) append result
+  }
+
   def filter(f: A => Boolean): Stream[A] = foldRight[Stream[A]](Empty) {
     case (current: A, result) =>
       if (f(current)) cons(current, result) else result
   }
 
-  def append[B>:A](s: => Stream[B]): Stream[B] = foldRight(s)((current,result) => cons(current,result))
+  def append[B >: A](s: => Stream[B]): Stream[B] = foldRight(s)((current, result) => cons(current, result))
 
 
   // 5.7 map, filter, append, flatmap using foldRight. Part of the exercise is
