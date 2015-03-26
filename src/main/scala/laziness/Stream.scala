@@ -22,9 +22,10 @@ trait Stream[+A] {
     case Cons(h, t) => if (f(h())) Some(h()) else t().find(f)
   }
 
-  def take(n: Int): Stream[A] = this match {
-    case Cons(h, t) if n > 0 => Cons(h, () => t().take(n - 1))
-    case _ => Empty
+  def take(n: Int): Stream[A] = unfold((this, n)) {
+    case (Cons(h, t), 1) => Some((h(), (empty, 0)))
+    case (Cons(h, t), n) if n > 1 => Some((h(), (t(), n - 1)))
+    case _ => None
   }
 
   def drop(n: Int): Stream[A] = this match {
@@ -46,14 +47,9 @@ trait Stream[+A] {
   }
 
   def map[B](f: A => B): Stream[B] = unfold(this) {
-    case Cons(h,t) => Some((f(h()), t()))
+    case Cons(h, t) => Some((f(h()), t()))
     case _ => None
   }
-
-//    foldRight[Stream[B]](Empty) {
-//    case (current: A, result) =>
-//      cons(f(current), result)
-//  }
 
   def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight[Stream[B]](Empty) {
     case (current, result) =>
