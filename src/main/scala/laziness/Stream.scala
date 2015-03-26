@@ -45,10 +45,15 @@ trait Stream[+A] {
     case _ => None
   }
 
-  def map[B](f: A => B): Stream[B] = foldRight[Stream[B]](Empty) {
-    case (current: A, result) =>
-      cons(f(current), result)
+  def map[B](f: A => B): Stream[B] = unfold(this) {
+    case Cons(h,t) => Some((f(h()), t()))
+    case _ => None
   }
+
+//    foldRight[Stream[B]](Empty) {
+//    case (current: A, result) =>
+//      cons(f(current), result)
+//  }
 
   def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight[Stream[B]](Empty) {
     case (current, result) =>
@@ -56,7 +61,7 @@ trait Stream[+A] {
   }
 
   def filter(f: A => Boolean): Stream[A] = foldRight(empty[A]) {
-    case (current: A, result) =>
+    case (current, result) =>
       if (f(current)) cons(current, result) else result
   }
 
