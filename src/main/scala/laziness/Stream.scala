@@ -87,7 +87,7 @@ object Stream {
 
   val ones: Stream[Int] = unfold(1)(x => Some((x, x)))
 
-  def constant[A](a: A): Stream[A] = Stream.cons(a, constant(a))
+  def constant[A](a: A): Stream[A] = unfold(a)(x => Some((x, x)))
 
   def from(n: Int): Stream[Int] = Stream.cons(n, from(n + 1))
 
