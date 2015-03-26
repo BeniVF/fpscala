@@ -73,4 +73,8 @@ class StreamSpec extends FlatSpec {
     from(10).take(2).toList shouldBe List(10, 11)
   }
 
+  it should "calculate fibonacci" in {
+    fibs.take(10).toList shouldBe List(0,1,1,2,3,5,8,13,21,34)
+  }
+
 }
