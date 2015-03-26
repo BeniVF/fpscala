@@ -77,4 +77,9 @@ class StreamSpec extends FlatSpec {
     fibs.take(10).toList shouldBe List(0,1,1,2,3,5,8,13,21,34)
   }
 
+  it should "unfold" in {
+    unfold(10)( x => if (x<100) Some((x+x, x+x)) else None).toList shouldBe List(20, 40, 80, 160)
+    unfold(2)( x => Some((x*x, x*x))).take(4).toList shouldBe List(4, 16, 256, 65536)
+  }
+
 }

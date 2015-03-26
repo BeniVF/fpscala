@@ -88,13 +88,22 @@ object Stream {
 
   def constant[A](a: A): Stream[A] = Stream.cons(a, constant(a))
 
-  def from(n: Int): Stream[Int] = Stream.cons(n, from(n+1))
+  def from(n: Int): Stream[Int] = Stream.cons(n, from(n + 1))
+
   val fibs: Stream[Int] = {
-    def go (first: Int, second: Int): Stream[Int] = {
-        cons(first, go(second, first + second))
+    def go(first: Int, second: Int): Stream[Int] = {
+      cons(first, go(second, first + second))
     }
-    go(0,1)
+    go(0, 1)
   }
 
-  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = sys.error("todo")
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = {
+    def go(current: S): Stream[A] = {
+      f(current) match {
+        case None => empty[A]
+        case Some((value, next)) => cons(value, go(next))
+      }
+    }
+    go(z)
+  }
 }
