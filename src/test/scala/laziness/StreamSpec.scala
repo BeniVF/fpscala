@@ -120,4 +120,11 @@ class StreamSpec extends FlatSpec {
     toList(Stream(1,2,3).tails) shouldBe List(List(1,2,3), List(2,3), List(3), Nil)
   }
 
+
+  it should "hasSubsequence" in {
+    Stream() hasSubsequence Stream() shouldBe true
+    Stream(1,3,4,5).hasSubsequence(Stream(3,4)) shouldBe true
+    Stream(1,3,4).hasSubsequence(Stream(1,4)) shouldBe false
+  }
+
 }

@@ -2,8 +2,6 @@ package laziness
 
 import Stream._
 import errorhandling._
-import errorhandling.Option._
-
 
 trait Stream[+A] {
 
@@ -96,6 +94,8 @@ trait Stream[+A] {
     case Empty => None
     case s => Some((s, s drop 1))
   } append Stream(empty)
+
+  def hasSubsequence[A](s: Stream[A]): Boolean = this.tails.exists(_ startsWith s)
 
   def toList: List[A] = foldRight(List[A]())((current, result) => current +: result)
 }
