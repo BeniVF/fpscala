@@ -82,4 +82,10 @@ class StreamSpec extends FlatSpec {
     unfold(2)( x => Some((x*x, x*x))).take(4).toList shouldBe List(4, 16, 256, 65536)
   }
 
+  it should "zipWith" in {
+    Stream().zipWith(Stream()){(x:Int, y:Int) => x+y}.toList shouldBe List()
+    Stream(1, 2).zipWith(Stream(2, 4)){(x, y) => x+y}.toList shouldBe List(3,6)
+    Stream(2, 3).zipWith(Stream(5, 6)){(x, y) => x*y}.toList shouldBe List(10,18)
+  }
+
 }

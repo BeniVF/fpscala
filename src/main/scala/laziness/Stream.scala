@@ -32,7 +32,7 @@ trait Stream[+A] {
   }
 
   def takeWhile(p: A => Boolean): Stream[A] = unfold(this) {
-    case Cons(h,t) if p(h()) => Some((h(), t()))
+    case Cons(h, t) if p(h()) => Some((h(), t()))
     case _ => None
   }
 
@@ -62,6 +62,12 @@ trait Stream[+A] {
 
   def append[B >: A](s: => Stream[B]): Stream[B] = foldRight(s)((current, result) => cons(current, result))
 
+  def zipWith[B, C](s2: Stream[B])(f: (A, B) => C): Stream[C] = unfold((this, s2)) {
+    case (Cons(h1, t1), Cons(h2, t2)) =>
+      Some((f(h1(), h2()), (t1(), t2())))
+    case _ => None
+  }
+
   def startsWith[B](s: Stream[B]): Boolean = sys.error("todo")
 
   def toList: List[A] = foldRight(List[A]())((current, result) => current +: result)
@@ -86,12 +92,12 @@ object Stream {
 
   val ones: Stream[Int] = constant(1)
 
-  def constant[A](a: A): Stream[A] = unfold(a)(x => Some((x , x)))
+  def constant[A](a: A): Stream[A] = unfold(a)(x => Some((x, x)))
 
-  def from(n: Int): Stream[Int] = unfold(n)(x => Some((x, x+1)))
+  def from(n: Int): Stream[Int] = unfold(n)(x => Some((x, x + 1)))
 
   val fibs: Stream[Int] = unfold((0, 1)) {
-    case (first, second) => Some(first, (second, first+second))
+    case (first, second) => Some(first, (second, first + second))
     case _ => None
   }
 
