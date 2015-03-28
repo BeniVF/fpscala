@@ -116,4 +116,8 @@ class StreamSpec extends FlatSpec {
     Stream(1,2,3) startsWith Stream(1,2) shouldBe true
   }
 
+  it should "tails" in {
+    toList(Stream(1,2,3).tails) shouldBe List(List(1,2,3), List(2,3), List(3), Nil)
+  }
+
 }

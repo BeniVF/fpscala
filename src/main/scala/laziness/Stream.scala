@@ -71,11 +71,10 @@ trait Stream[+A] {
     case _ => None
   }
 
-  def zip[B](s2: Stream[B]): Stream[(A,B)] = this.zipWith(s2)((_, _))
+  def zip[B](s2: Stream[B]): Stream[(A, B)] = this.zipWith(s2)((_, _))
 
 
-  def zipWithAll[B, C](s2: Stream[B])(f: (Option[A], Option[B]) => C): Stream[C] =
-  unfold((this, s2)) {
+  def zipWithAll[B, C](s2: Stream[B])(f: (Option[A], Option[B]) => C): Stream[C] = unfold((this, s2)) {
     case (Cons(h1, t1), Cons(h2, t2)) =>
       Some((f(Some(h1()), Some(h2())), (t1(), t2())))
     case (Cons(h1, t1), Empty) =>
@@ -85,14 +84,18 @@ trait Stream[+A] {
     case _ => None
   }
 
-  def zipAll[B](s2: Stream[B]): Stream[(Option[A],Option[B])] =
+  def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] =
     this.zipWithAll(s2)((_, _))
 
   def startsWith[B](s: Stream[B]): Boolean =
     this.zipAll(s).takeWhile(_._2 != None) forAll {
-      case (h, h2) =>  h == h2
+      case (h, h2) => h == h2
     }
 
+  def tails: Stream[Stream[A]] = unfold(this) {
+    case Empty => None
+    case s => Some((s, s drop 1))
+  } append Stream(empty)
 
   def toList: List[A] = foldRight(List[A]())((current, result) => current +: result)
 }
@@ -107,6 +110,9 @@ object Stream {
     lazy val tail = tl
     Cons(() => head, () => tail)
   }
+
+  def toList[A](a: Stream[Stream[A]]): List[List[A]] =
+    a.toList.map(_.toList)
 
   def empty[A]: Stream[A] = Empty
 
