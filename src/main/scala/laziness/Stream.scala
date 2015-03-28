@@ -87,9 +87,9 @@ object Stream {
 
   val ones: Stream[Int] = constant(1)
 
-  def constant[A](a: A): Stream[A] = unfold(a)(x => Some((x, x)))
+  def constant[A](a: A): Stream[A] = unfold(a)(x => Some((x , x)))
 
-  def from(n: Int): Stream[Int] = Stream.cons(n, from(n + 1))
+  def from(n: Int): Stream[Int] = unfold(n)(x => Some((x, x+1)))
 
   val fibs: Stream[Int] = {
     def go(first: Int, second: Int): Stream[Int] = {
