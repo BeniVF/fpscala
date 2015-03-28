@@ -88,4 +88,10 @@ class StreamSpec extends FlatSpec {
     Stream(2, 3).zipWith(Stream(5, 6)){(x, y) => x*y}.toList shouldBe List(10,18)
   }
 
+  it should "zip" in {
+    Stream().zip(Stream()).toList shouldBe List()
+    Stream(1, 2).zip(Stream(2, 4)).toList shouldBe List((1,2), (2,4))
+  }
+
+
 }
