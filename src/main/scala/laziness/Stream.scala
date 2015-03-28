@@ -85,7 +85,7 @@ object Stream {
     if (as.isEmpty) empty
     else cons(as.head, apply(as.tail: _*))
 
-  val ones: Stream[Int] = unfold(1)(x => Some((x, x)))
+  val ones: Stream[Int] = constant(1)
 
   def constant[A](a: A): Stream[A] = unfold(a)(x => Some((x, x)))
 
