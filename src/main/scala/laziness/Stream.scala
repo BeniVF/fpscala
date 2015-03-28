@@ -82,6 +82,10 @@ trait Stream[+A] {
       Some((f(None, Some(h2())), (empty[A], t2())))
     case _ => None
   }
+
+  def zipAll[B](s2: Stream[B]): Stream[(Option[A],Option[B])] =
+    this.zipWithAll(s2)((_, _))
+
   def startsWith[B](s: Stream[B]): Boolean = sys.error("todo")
 
   def toList: List[A] = foldRight(List[A]())((current, result) => current +: result)

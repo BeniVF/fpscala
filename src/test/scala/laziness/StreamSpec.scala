@@ -103,5 +103,10 @@ class StreamSpec extends FlatSpec {
     Stream(2, 3).zipWithAll(Stream(5, 6, 7)){map2(_, _)(_*_).getOrElse(0)}.toList shouldBe List(10,18, 0)
   }
 
+  it should "zipAll" in {
+    Stream().zipAll(Stream()).toList shouldBe List()
+    Stream(1, 2).zipAll(Stream(2, 4, 5)).toList shouldBe List((Some(1),Some(2)), (Some(2),Some(4)), (None, Some(5)))
+    Stream("a", "b").zipAll(Stream("c")).toList shouldBe List((Some("a"),Some("c")), (Some("b"), None))
+  }
 
 }
