@@ -4,9 +4,6 @@ import Stream._
 
 trait Stream[+A] {
 
-  //  def uncons: Option[(A, Stream[A])]
-  //  def isEmpty: Boolean = uncons.isEmpty
-
   def foldRight[B](z: => B)(f: (A, => B) => B): B = // The arrow `=>` in front of the argument type `B` means that the function `f` takes its second argument by name and may choose not to evaluate it.
     this match {
       case Cons(h, t) => f(h(), t().foldRight(z)(f)) // If `f` doesn't evaluate its second argument, the recursion never occurs.
@@ -39,7 +36,9 @@ trait Stream[+A] {
     case _ => None
   }
 
-  def forAll(p: A => Boolean): Boolean = foldRight(true) { case (current, result) => result && p(current) }
+  def forAll(p: A => Boolean): Boolean = foldRight(true) {
+    case (current, result) => result && p(current)
+  }
 
   def headOption: Option[A] = this match {
     case Cons(h, t) => Some(h())
@@ -51,7 +50,7 @@ trait Stream[+A] {
     case _ => None
   }
 
-  def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight[Stream[B]](Empty) {
+  def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight(empty[B]) {
     case (current, result) =>
       f(current) append result
   }
@@ -91,11 +90,9 @@ object Stream {
 
   def from(n: Int): Stream[Int] = unfold(n)(x => Some((x, x+1)))
 
-  val fibs: Stream[Int] = {
-    def go(first: Int, second: Int): Stream[Int] = {
-      cons(first, go(second, first + second))
-    }
-    go(0, 1)
+  val fibs: Stream[Int] = unfold((0, 1)) {
+    case (first, second) => Some(first, (second, first+second))
+    case _ => None
   }
 
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = {
