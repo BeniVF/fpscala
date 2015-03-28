@@ -6,6 +6,8 @@ import Matchers._
 class StreamSpec extends FlatSpec {
 
   import Stream._
+  import errorhandling._
+  import errorhandling.Option._
 
   it should "take n elements" in {
     Stream().take(10).toList shouldBe List()
@@ -84,13 +86,21 @@ class StreamSpec extends FlatSpec {
 
   it should "zipWith" in {
     Stream().zipWith(Stream()){(x:Int, y:Int) => x+y}.toList shouldBe List()
-    Stream(1, 2).zipWith(Stream(2, 4)){(x, y) => x+y}.toList shouldBe List(3,6)
-    Stream(2, 3).zipWith(Stream(5, 6)){(x, y) => x*y}.toList shouldBe List(10,18)
+    Stream(1, 2).zipWith(Stream(2, 4)){_+_}.toList shouldBe List(3,6)
+    Stream(2, 3).zipWith(Stream(5, 6)){_*_}.toList shouldBe List(10,18)
+    Stream(2, 3).zipWith(Stream(5, 6, 6)){_*_}.toList shouldBe List(10,18)
   }
 
   it should "zip" in {
     Stream().zip(Stream()).toList shouldBe List()
     Stream(1, 2).zip(Stream(2, 4)).toList shouldBe List((1,2), (2,4))
+  }
+
+  it should "zipWithAll" in {
+    Stream().zipWithAll(Stream()){(_,_)}.toList shouldBe List()
+    Stream(1, 2).zipWithAll(Stream(2, 4)){map2(_, _)(_+_).getOrElse(0)}.toList shouldBe List(3,6)
+    Stream(2, 3).zipWithAll(Stream(5, 6, 3)){(x, y) => (map2(x, y)(_*_) orElse x orElse y).getOrElse(0)}.toList shouldBe List(10,18, 3)
+    Stream(2, 3).zipWithAll(Stream(5, 6, 7)){map2(_, _)(_*_).getOrElse(0)}.toList shouldBe List(10,18, 0)
   }
 
 
