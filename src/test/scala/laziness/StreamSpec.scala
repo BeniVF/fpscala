@@ -127,4 +127,9 @@ class StreamSpec extends FlatSpec {
     Stream(1,3,4).hasSubsequence(Stream(1,4)) shouldBe false
   }
 
+  it should "scanRight" in {
+    Stream(3, 2, 1).scanRight(1)(_ * _).toList shouldBe List(6, 2, 1, 1)
+    Stream(1,2,3).scanRight(0)(_ + _).toList shouldBe List(6, 5, 3, 0)
+  }
+
 }

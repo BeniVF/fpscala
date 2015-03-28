@@ -97,6 +97,8 @@ trait Stream[+A] {
 
   def hasSubsequence[A](s: Stream[A]): Boolean = this.tails.exists(_ startsWith s)
 
+  def scanRight[B](z: B)(f: (A, => B) => B): Stream[B] = this.tails.map(_.foldRight(z)(f))
+
   def toList: List[A] = foldRight(List[A]())((current, result) => current +: result)
 }
 
