@@ -2,6 +2,8 @@ package laziness
 
 import Stream._
 import errorhandling._
+import errorhandling.Option._
+
 
 trait Stream[+A] {
 
@@ -86,7 +88,11 @@ trait Stream[+A] {
   def zipAll[B](s2: Stream[B]): Stream[(Option[A],Option[B])] =
     this.zipWithAll(s2)((_, _))
 
-  def startsWith[B](s: Stream[B]): Boolean = sys.error("todo")
+  def startsWith[B](s: Stream[B]): Boolean =
+    this.zipAll(s).takeWhile(_._2 != None) forAll {
+      case (h, h2) =>  h == h2
+    }
+
 
   def toList: List[A] = foldRight(List[A]())((current, result) => current +: result)
 }

@@ -109,4 +109,11 @@ class StreamSpec extends FlatSpec {
     Stream("a", "b").zipAll(Stream("c")).toList shouldBe List((Some("a"),Some("c")), (Some("b"), None))
   }
 
+  it should "startsWith" in {
+    Stream() startsWith Stream() shouldBe true
+    Stream(1,2) startsWith Stream(6,2,3) shouldBe false
+    Stream(5,2,4) startsWith Stream(5,2,5,1) shouldBe false
+    Stream(1,2,3) startsWith Stream(1,2) shouldBe true
+  }
+
 }
