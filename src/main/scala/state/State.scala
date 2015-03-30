@@ -31,6 +31,11 @@ object RNG {
       (f(a), rng2)
     }
 
+  def positiveMax(n: Int): Rand[Int] = map(int){
+   value =>
+     value.abs % (n+1)
+  }
+
   def nonNegativeInt(rng: RNG): (Int, RNG) = {
     val (value: Int, newRng) = rng.nextInt
     (if (value < 0) -(value + 1) else value, newRng)

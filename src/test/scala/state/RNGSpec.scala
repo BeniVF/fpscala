@@ -3,7 +3,7 @@ package state
 import org.scalatest.{Matchers, FlatSpec}
 import Matchers._
 
-class StateSpec extends FlatSpec {
+class RNGSpec extends FlatSpec {
   import RNG._
 
   def generateRNGs(test : RNG => Unit): Unit = {
