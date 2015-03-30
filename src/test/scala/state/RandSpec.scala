@@ -21,6 +21,16 @@ class RandSpec extends FlatSpec {
     }
   }
 
+
+  it should "generate a random double between 0 and 1" in {
+    generateRand {
+      (rng, _) =>
+      val (value, newRng) = doubleRand(rng)
+      assertValidDouble(value)
+      assertNewStateIsGenerated(rng, newRng)
+    }
+  }
+
   def assertValidRange(value: Int, max: Int): Unit = {
     value should be >= 0
     value should be <= max
@@ -28,5 +38,10 @@ class RandSpec extends FlatSpec {
 
   def assertNewStateIsGenerated(rng: RNG, newRng: RNG): Unit =
     newRng should not be (rng)
+
+  def assertValidDouble(value: Double): Unit = {
+    value should be >= 0.0
+    value should be <= 1.0
+  }
 
 }

@@ -22,6 +22,11 @@ object RNG {
 
   val int: Rand[Int] = _.nextInt
 
+  val doubleRand: Rand[Double] = map(int) {
+    value =>
+      value.abs.toDouble / Int.MaxValue.toDouble
+  }
+
   def unit[A](a: A): Rand[A] =
     rng => (a, rng)
 
@@ -31,9 +36,9 @@ object RNG {
       (f(a), rng2)
     }
 
-  def positiveMax(n: Int): Rand[Int] = map(int){
-   value =>
-     value.abs % (n+1)
+  def positiveMax(n: Int): Rand[Int] = map(int) {
+    value =>
+      value.abs % (n + 1)
   }
 
   def nonNegativeInt(rng: RNG): (Int, RNG) = {
