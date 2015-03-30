@@ -47,7 +47,10 @@ object RNG {
     ((intValue, doubleValue), lastRng)
   }
 
-  def doubleInt(rng: RNG): ((Double, Int), RNG) = ???
+  def doubleInt(rng: RNG): ((Double, Int), RNG) = {
+    val ((intValue, doubleValue), newRng) = intDouble(rng)
+    ((doubleValue, intValue), newRng)
+  }
 
   def double3(rng: RNG): ((Double, Double, Double), RNG) = ???
 

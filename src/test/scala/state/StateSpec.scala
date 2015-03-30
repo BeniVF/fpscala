@@ -39,4 +39,14 @@ class StateSpec extends FlatSpec {
     }
   }
 
+  it should "generate a random pair of Double and Int" in {
+    generateRNGs { rng =>
+      val ((doubleValue, intValue), newRng) = doubleInt(rng)
+      intValue should be >= 0
+      doubleValue should be >= 0.0
+      doubleValue should be <= 1.0
+      newRng should not be(rng)
+    }
+  }
+
 }
