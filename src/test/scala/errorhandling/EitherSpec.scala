@@ -1,9 +1,7 @@
 package errorhandling
 
-
 import org.scalatest.{Matchers, FlatSpec}
 import Matchers._
-
 
 class EitherSpec extends FlatSpec {
   import Either._
