@@ -15,38 +15,59 @@ class StateSpec extends FlatSpec {
   it should "generate a random positive integer" in {
     generateRNGs { rng =>
       val (value, newRng) = nonNegativeInt(rng)
-      value should be >=0
-      newRng should not be(rng)
+      assertValidInt(value)
+      assertNewStateIsGenerated(rng, newRng)
     }
+  }
+
+  def assertNewStateIsGenerated(rng: RNG, newRng: RNG): Unit = {
+    newRng should not be (rng)
   }
 
   it should "generate a random double between 0 and 1" in {
     generateRNGs { rng =>
       val (value, newRng) = double(rng)
-      value should be >= 0.0
-      value should be <= 1.0
-      newRng should not be(rng)
+      assertValidDouble(value)
+      assertNewStateIsGenerated(rng, newRng)
     }
   }
 
   it should "generate a random pair of Int and Double" in {
     generateRNGs { rng =>
       val ((intValue, doubleValue), newRng) = intDouble(rng)
-      intValue should be >= 0
-      doubleValue should be >= 0.0
-      doubleValue should be <= 1.0
-      newRng should not be(rng)
+      assertValidInt(intValue)
+      assertValidDouble(doubleValue)
+      assertNewStateIsGenerated(rng, newRng)
     }
   }
 
   it should "generate a random pair of Double and Int" in {
     generateRNGs { rng =>
       val ((doubleValue, intValue), newRng) = doubleInt(rng)
-      intValue should be >= 0
-      doubleValue should be >= 0.0
-      doubleValue should be <= 1.0
-      newRng should not be(rng)
+      assertValidInt(intValue)
+      assertValidDouble(doubleValue)
+      assertNewStateIsGenerated(rng, newRng)
     }
   }
 
+
+
+  it should "generate a random pair of three Doubles" in {
+    generateRNGs { rng =>
+      val ((first, second, third), newRng) = double3(rng)
+      assertValidDouble(first)
+      assertValidDouble(second)
+      assertValidDouble(third)
+      assertNewStateIsGenerated(rng, newRng)
+    }
+  }
+
+  def assertValidInt(intValue: Int): Unit = {
+    intValue should be >= 0
+  }
+
+  def assertValidDouble(value: Double): Unit = {
+    value should be >= 0.0
+    value should be <= 1.0
+  }
 }

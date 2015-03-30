@@ -52,7 +52,12 @@ object RNG {
     ((doubleValue, intValue), newRng)
   }
 
-  def double3(rng: RNG): ((Double, Double, Double), RNG) = ???
+  def double3(rng: RNG): ((Double, Double, Double), RNG) = {
+    val (firtValue, firstRng) = double(rng)
+    val (secondValue: Double, secondRng) = double(firstRng)
+    val (thirdValue: Double, thirdRng) = double(secondRng)
+    ((firtValue, secondValue, thirdValue), thirdRng)
+  }
 
   def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
 
