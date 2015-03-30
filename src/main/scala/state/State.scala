@@ -59,7 +59,13 @@ object RNG {
     ((firtValue, secondValue, thirdValue), thirdRng)
   }
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    (1 to count).foldLeft((List[Int](), rng)) {
+      case ((list, rng), _) =>
+        val (value: Int, newRng) = rng.nextInt
+        (list :+ value, newRng)
+    }
+  }
 
   def map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
 
