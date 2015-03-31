@@ -28,7 +28,7 @@ object RNG {
   }
 
   def intsRand(count: Int): Rand[List[Int]] =
-      sequence((1 to count).map(_=> int).toList)
+    sequence(List.fill(count)(int))
 
   def unit[A](a: A): Rand[A] =
     rng => (a, rng)
