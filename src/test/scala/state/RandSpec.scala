@@ -7,12 +7,12 @@ class RandSpec extends FlatSpec {
   import RNG._
 
   def generateRand(test : (RNG, Int) => Unit): Unit = {
-    for (i <- 0 to 100000) {
+    for (i <- 1 to 100000) {
       test(Simple(i), i)
     }
   }
 
-  it should "generate a list of random integers" in {
+  it should "generate random integer" in {
     generateRand {
       (rng, i) =>
       val (value, newRng) = positiveMax(i)(rng)
@@ -56,6 +56,15 @@ class RandSpec extends FlatSpec {
     }
   }
 
+  it should "generate a list of random integers" in {
+    generateRand { (rng, i) =>
+      val (integers, newRng) = intsRand(10)(rng)
+      integers.size shouldBe 10
+      integers.foreach(assertValidInt)
+      assertNewStateIsGenerated(rng, newRng)
+    }
+  }
+
   def assertValidRange(value: Int, max: Int): Unit = {
     value should be >= 0
     value should be <= max
@@ -67,6 +76,11 @@ class RandSpec extends FlatSpec {
   def assertValidDouble(value: Double): Unit = {
     value should be >= 0.0
     value should be <= 1.0
+  }
+
+  def assertValidInt(intValue: Int): Unit = {
+    intValue should be >= Integer.MIN_VALUE
+    intValue should be <= Integer.MAX_VALUE
   }
 
 }

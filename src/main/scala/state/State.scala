@@ -27,6 +27,9 @@ object RNG {
       value.abs.toDouble / Int.MaxValue.toDouble
   }
 
+  def intsRand(count: Int): Rand[List[Int]] =
+      sequence((1 to count).map(_=> int).toList)
+
   def unit[A](a: A): Rand[A] =
     rng => (a, rng)
 
