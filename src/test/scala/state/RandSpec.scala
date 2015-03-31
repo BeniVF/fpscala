@@ -41,6 +41,21 @@ class RandSpec extends FlatSpec {
     }
   }
 
+  it should "generate a random with sequence combinator" in {
+    generateRand {
+      (rng, i) =>
+        val (list, newRng) = sequence(List(positiveMax(i), positiveMax(i*10), positiveMax(i*100)))(rng)
+        val first  = list.head
+        val second  = list.tail.head
+        val third  = list.last
+
+        assertValidRange(first, i)
+        assertValidRange(second, i*10)
+        assertValidRange(third, i*100)
+        assertNewStateIsGenerated(rng, newRng)
+    }
+  }
+
   def assertValidRange(value: Int, max: Int): Unit = {
     value should be >= 0
     value should be <= max
