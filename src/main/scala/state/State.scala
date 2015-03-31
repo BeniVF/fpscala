@@ -50,7 +50,12 @@ object RNG {
     fs.foldRight(unit(List[A]()))((f, acc) => map2(f, acc)(_ :: _))
 
 
-  def flatMap[A, B](f: Rand[A])(g: A => Rand[B]): Rand[B] = ???
+  def flatMap[A, B](f: Rand[A])(g: A => Rand[B]): Rand[B] =
+    rng => {
+      val (a, rng2) = f(rng)
+      g(a)(rng2)
+    }
+
 
   def positiveMax(n: Int): Rand[Int] = map(int) {
     value =>
