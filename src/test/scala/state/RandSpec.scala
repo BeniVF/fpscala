@@ -1,7 +1,7 @@
 package state
 
 import org.scalatest.Matchers._
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{FlatSpec}
 
 class RandSpec extends FlatSpec {
   import RNG._
@@ -28,6 +28,16 @@ class RandSpec extends FlatSpec {
       val (value, newRng) = doubleRand(rng)
       assertValidDouble(value)
       assertNewStateIsGenerated(rng, newRng)
+    }
+  }
+
+  it should "generate a random with map2 combinator" in {
+    generateRand {
+      (rng, i) =>
+        val ((intValue, doubleValue), newRng) = map2(positiveMax(i),doubleRand){(_,_)}(rng)
+        assertValidRange(intValue, i)
+        assertValidDouble(doubleValue)
+        assertNewStateIsGenerated(rng, newRng)
     }
   }
 
