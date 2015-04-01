@@ -77,6 +77,15 @@ class RandSpec extends FlatSpec {
     }
   }
 
+  it should "generate a random positive integer" in {
+    generateRand { (rng, i) =>
+      val (value, newRng) = nonNegativeIntRand(rng)
+      assertValidInt(value)
+      assertNonNegativeInt(value)
+      assertNewStateIsGenerated(rng, newRng)
+    }
+  }
+
   it should "map with Random numbers" in {
     generateRand { (rng, i) =>
       val result = map(positiveMax(i)) {
@@ -106,5 +115,7 @@ class RandSpec extends FlatSpec {
     intValue should be >= Integer.MIN_VALUE
     intValue should be <= Integer.MAX_VALUE
   }
+  def assertNonNegativeInt(intValue: Int): Unit =
+    intValue should be >= 0
 
 }

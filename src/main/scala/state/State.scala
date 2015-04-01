@@ -55,6 +55,9 @@ object RNG {
       g(a)(rng2)
     }
 
+  def nonNegativeIntRand : Rand[Int] = flatMap(int) {
+    a => unit(if (a < 0) -(a + 1) else a)
+  }
 
   def positiveMax(n: Int): Rand[Int] = map(int) {
     value =>
