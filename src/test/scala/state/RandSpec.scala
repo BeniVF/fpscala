@@ -7,7 +7,7 @@ class RandSpec extends FlatSpec {
   import RNG._
 
   def generateRand(test : (RNG, Int) => Unit): Unit = {
-    for (i <- 1 to 100000) {
+    for (i <- 1 to 10000) {
       test(Simple(i), i)
     }
   }
