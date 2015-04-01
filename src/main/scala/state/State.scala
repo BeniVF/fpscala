@@ -1,5 +1,7 @@
 package state
 
+import state.State
+
 
 trait RNG {
   def nextInt: (Int, RNG) // Should generate a random `Int`. We'll later define other functions in terms of `nextInt`.
@@ -105,16 +107,22 @@ object RNG {
 
 case class State[S, +A](run: S => (A, S)) {
   def map[B](f: A => B): State[S, B] =
-    State[S,B] { s =>
+    State[S, B] { s =>
       val (a, newS) = run(s)
       (f(a), newS)
     }
 
   def map2[B, C](sb: State[S, B])(f: (A, B) => C): State[S, C] =
-    sys.error("todo")
+    for {
+      a <- this
+      b <- sb
+    } yield f(a, b)
 
   def flatMap[B](f: A => State[S, B]): State[S, B] =
-    sys.error("todo")
+    State(s => {
+      val (a, newS) = run(s)
+      f(a).run(newS)
+    })
 }
 
 sealed trait Input
