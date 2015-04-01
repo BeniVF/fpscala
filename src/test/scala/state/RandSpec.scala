@@ -77,7 +77,17 @@ class RandSpec extends FlatSpec {
     }
   }
 
+  it should "map with Random numbers" in {
+    generateRand { (rng, i) =>
+      val result = map(positiveMax(i)) {
+        _.toString
+      }
+      val (first, newRng) = result(rng)
+      assertValidRange(first.toInt, i)
+      assertNewStateIsGenerated(rng, newRng)
 
+    }
+  }
 
   def assertValidRange(value: Int, max: Int): Unit = {
     value should be >= 0
