@@ -24,4 +24,11 @@ class StateSpec extends FlatSpec {
   }
 
 
+  it should "modify the state" in {
+    import State._
+    modify{s: Int => s + 1 }.run(7) shouldBe ((), 8)
+    modify{s: Int => s * 2 }.run(5) shouldBe ((), 10)
+  }
+
+
 }

@@ -1,6 +1,5 @@
 package state
 
-import state.State
 
 
 trait RNG {
@@ -125,6 +124,7 @@ case class State[S, +A](run: S => (A, S)) {
     })
 }
 
+
 sealed trait Input
 
 case object Coin extends Input
@@ -135,6 +135,18 @@ case class Machine(locked: Boolean, candies: Int, coins: Int)
 
 object State {
   type Rand[A] = State[RNG, A]
+
+  def get[S] : State[S, S] = State {
+    s =>  (s, s)
+  }
+
+  def set[S](value: S) : State[S, Unit] = State(
+    _ => ((), value))
+
+  def modify[S](f: S => S): State[S, Unit] = for {
+    s <- get
+    _ <- set(f(s))
+  } yield ()
 
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = ???
 }
