@@ -135,6 +135,12 @@ case class Machine(locked: Boolean, candies: Int, coins: Int)
 object State {
   type Rand[A] = State[RNG, A]
 
+  def unit[S, A](a: A): State[S, A] =
+    State(s => (a, s))
+
+  def sequence[S, A](sas: List[State[S, A]]): State[S, List[A]] =
+    sas.foldRight(unit[S, List[A]](List()))((f, acc) => f.map2(acc)(_ :: _))
+
   def get[S]: State[S, S] = State {
     s => (s, s)
   }
@@ -152,8 +158,8 @@ object State {
       inputs.foldLeft((state.candies, state.coins), state) {
         case ((_, newState), current) =>
           current match {
-            case Coin if newState.locked && newState.candies > 0 => ((newState.candies, newState.coins+1), newState.copy(locked = false).copy(coins = newState.coins + 1))
-            case Turn if !newState.locked && newState.candies > 0 => ((newState.candies -1, newState.coins), newState.copy(locked = true).copy(candies = newState.candies - 1))
+            case Coin if newState.locked && newState.candies > 0 => ((newState.candies, newState.coins + 1), newState.copy(locked = false).copy(coins = newState.coins + 1))
+            case Turn if !newState.locked && newState.candies > 0 => ((newState.candies - 1, newState.coins), newState.copy(locked = true).copy(candies = newState.candies - 1))
             case _ => ((newState.candies, newState.coins), newState)
           }
       }
