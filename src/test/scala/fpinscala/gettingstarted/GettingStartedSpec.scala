@@ -16,7 +16,7 @@ object GettingStartedSpec extends Properties("GettingStartedSpec") {
 		else
 			fib(a) == fib(a-1) + fib(a-2)
 	}
-	val genIntArray = Gen.containerOf[Array, Int](
+	val genIntArray = Gen.containerOfN[Array, Int](100,
 		Gen.chooseNum(Int.MinValue, Int.MaxValue)
 	)
 	val genSortedIntArray = genIntArray.map(_.sorted.zipWithIndex.map{case (value, index) => value+2*index}.sorted)
@@ -26,11 +26,18 @@ object GettingStartedSpec extends Properties("GettingStartedSpec") {
 	}
 
 	property("unsorted array") = forAll(genSortedIntArray) { (c: Array[Int]) =>
-		if (c.length > 2 ) 
-			isSorted(c, (a: Int, b: Int) => a>b || b == a) == false
-		else true
+		isSorted(c, (a: Int, b: Int) => a>b || b == a) == false
+	}
+
+	property("curry") = forAll { (a: Int, b: Int) =>
+		val sum = (a:Int,b: Int) => a+b
+		curry(sum)(a)(b) == sum(a,b)
 	}
 
 
+	property("uncurry") = forAll { (a: Int, b: Int) =>
+		val sum = (a :Int) => (b:Int) => a+b
+		uncurry(sum)(a, b) == sum(a)(b)
+	}
 
 }
