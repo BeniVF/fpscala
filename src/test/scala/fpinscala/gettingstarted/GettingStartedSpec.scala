@@ -34,10 +34,14 @@ object GettingStartedSpec extends Properties("GettingStartedSpec") {
 		curry(sum)(a)(b) == sum(a,b)
 	}
 
-
 	property("uncurry") = forAll { (a: Int, b: Int) =>
 		val sum = (a :Int) => (b:Int) => a+b
 		uncurry(sum)(a, b) == sum(a)(b)
 	}
 
+	property("compose") = forAll { (a: Int) =>
+		val add =  (a:Int) => a+1
+		val duplicate =  (a:Int) => a*2
+		compose(add, duplicate)(a) == add(duplicate(a))
+	}
 }
