@@ -1,7 +1,8 @@
-scalaVersion := "2.11.0"
+name := "FPScala"
+scalaVersion := "2.11.7"
 
 scalacOptions ++= Seq("-feature")
 
 libraryDependencies ++= Seq(
-  "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test"
+  "org.scalacheck" %% "scalacheck" % "1.13.0" % "test"
 )
