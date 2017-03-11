@@ -12,7 +12,7 @@ object MonoidSpec extends Properties("GettingStartedSpec") {
   implicit val functionIntToInt  = Arbitrary.arbFunction1[Int, Int].arbitrary
 
 
-  def endoMonoidLaws[A](monoid: Monoid[A])(implicit aGen: Gen[A]) = forAll(aGen, aGen, aGen) { (x: A, y: A, z:A ) =>
+  def monoidLaws[A](monoid: Monoid[A])(implicit aGen: Gen[A]) = forAll(aGen, aGen, aGen) { (x: A, y: A, z:A ) =>
     monoid.op(monoid.op(x, y), monoid.zero) == monoid.op(x, monoid.op(y, monoid.zero)) &&
       monoid.op(monoid.op(x, y), z) == monoid.op(x, monoid.op(y, z))
   }
@@ -24,15 +24,15 @@ object MonoidSpec extends Properties("GettingStartedSpec") {
       monoid.op(monoid.op(x, y), z).apply(a) == monoid.op(x, monoid.op(y, z)).apply(a)
   }
 
-  property("int addition monoids") = endoMonoidLaws(Monoid.intAddition)
+  property("int addition monoids") = monoidLaws(Monoid.intAddition)
 
-  property("int multiplication monoids") = endoMonoidLaws(Monoid.intMultiplication)
+  property("int multiplication monoids") = monoidLaws(Monoid.intMultiplication)
 
-  property("boolean or monoids") = endoMonoidLaws(Monoid.booleanOr)
+  property("boolean or monoids") = monoidLaws(Monoid.booleanOr)
 
-  property("boolean and monoids") = endoMonoidLaws(Monoid.booleanAnd)
+  property("boolean and monoids") = monoidLaws(Monoid.booleanAnd)
 
-  property("option of int monoids") = endoMonoidLaws(Monoid.option[Int])
+  property("option of int monoids") = monoidLaws(Monoid.option[Int])
 
   property("endfunction of int monoids") = endoMonoidLaws(Monoid.endo[Int])
 
