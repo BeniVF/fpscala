@@ -47,10 +47,26 @@ object Par {
 
   def sequence_simple[A](l: List[Par[A]]): Par[List[A]] =
     l.foldLeft(unit(List.empty[A])) { (acc, current) =>
-      map2(acc, current){case (list, value) => list :+ value}
+      map2(acc, current) { case (list, value) => list :+ value }
     }
 
+  def sequenceRight[A](as: List[Par[A]]): Par[List[A]] =
+    as match {
+      case Nil => unit(List.empty[A])
+      case x :: xs => map2(x, fork(sequenceRight(xs))) {
+        _ :: _
+      }
+    }
 
+  def sequenceBalanced[A](as: IndexedSeq[Par[A]]): Par[IndexedSeq[A]] = fork {
+    as match {
+      case xs if xs.isEmpty => unit(Vector.empty[A])
+      case xs if xs.length ==1 => map(xs.head)(Vector(_))
+      case xs =>
+        val (l,r) = xs.splitAt(xs.length/2)
+        map2(sequenceBalanced(l), sequenceBalanced(r)){_ ++ _}
+    }
+  }
 
   implicit def toParOps[A](p: Par[A]): ParOps[A] = new ParOps(p)
 

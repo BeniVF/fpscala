@@ -11,7 +11,7 @@ class ParSpec extends FlatSpec {
   import Executors._
 
   val singleThread = newFixedThreadPool(1)
-  val multipleThreads = newFixedThreadPool(10)
+  val multipleThreads = newFixedThreadPool(100)
 
   it should "create a unit" in {
     Par.run(singleThread)(unit(10)).get shouldBe 10
@@ -61,10 +61,16 @@ class ParSpec extends FlatSpec {
   }
 
   it should "sequence" in {
-    sequence_simple((1 to 20).toList.map(asyncF { time: Int =>
+    val threads = 1 to 10
+    val tasks = threads.map(asyncF { time: Int =>
       sleep(time)
       time.toString
-    }(_)))(multipleThreads).get shouldBe (1 to 20).map(_.toString).toList
+    }(_))
+    val expectedResult = threads.map(_.toString).toList
+
+    sequence_simple(tasks.toList)(multipleThreads).get(2, TimeUnit.SECONDS) shouldBe expectedResult
+    sequenceRight(tasks.toList)(multipleThreads).get(2, TimeUnit.SECONDS) shouldBe expectedResult
+    sequenceBalanced(tasks)(multipleThreads).get(2, TimeUnit.SECONDS) shouldBe expectedResult
   }
 
   private def sleep(milliseconds: Long): String = {
