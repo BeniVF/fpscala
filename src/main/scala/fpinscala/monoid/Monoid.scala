@@ -10,6 +10,12 @@ trait Monoid[A] {
 
 object Monoid {
 
+  def listAddition[A]: Monoid[List[A]] = new Monoid[List[A]] {
+    def op(a1: List[A], a2: List[A]) = a1 ++ a2
+
+    def zero = List.empty[A]
+  }
+
   val stringAddition: Monoid[String] = new Monoid[String] {
     def op(a1: String, a2: String) = a1 + a2
 
@@ -60,5 +66,11 @@ object Monoid {
     case _ =>
       val (l, r) = v.splitAt(v.size / 2)
       m.op(foldMapV(l, m)(f), foldMapV(r, m)(f))
+  }
+
+  val wcMonoid = new Monoid[WC] {
+    def op(a1: WC, a2: WC): WC = ???
+
+    def zero: WC = ???
   }
 }

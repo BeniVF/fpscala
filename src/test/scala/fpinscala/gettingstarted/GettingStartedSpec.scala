@@ -22,11 +22,11 @@ object GettingStartedSpec extends Properties("GettingStartedSpec") {
 	val genSortedIntArray = genIntArray.map(_.sorted.zipWithIndex.map{case (value, index) => value+2*index}.sorted)
 
 	property("sorted array") = forAll(genSortedIntArray) { (a: Array[Int]) =>
-		isSorted(a, (a: Int, b: Int) => a<=b) == true
+		isSorted(a, (a: Int, b: Int) => a <= b)
 	}
 
 	property("unsorted array") = forAll(genSortedIntArray) { (c: Array[Int]) =>
-		isSorted(c, (a: Int, b: Int) => a>b || b == a) == false
+		!isSorted(c, (a: Int, b: Int) => a > b || b == a)
 	}
 
 	property("curry") = forAll { (a: Int, b: Int) =>
