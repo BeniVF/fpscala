@@ -26,8 +26,6 @@ object Par {
     }
   }
 
-  def sortPar(parList: Par[List[Int]]): Par[List[Int]] = map(parList)(_.sorted)
-
   def delay[A](fa: => Par[A]): Par[A] =
     es => fa(es)
 
@@ -67,6 +65,19 @@ object Par {
         map2(sequenceBalanced(l), sequenceBalanced(r)){_ ++ _}
     }
   }
+
+  def sequence[A](as: List[Par[A]]): Par[List[A]] = map(sequenceBalanced(as.toIndexedSeq))(_.toList)
+
+  def parFilter[A](l: List[A])(f: A => Boolean): Par[List[A]] = {
+    val parList = l.map(asyncF(a => if (f(a)) List(a) else List()))
+    map(sequence(parList))(_.flatten)
+  }
+
+  def choiceN[A](n: Par[Int])(choices: List[Par[A]]): Par[A] = map2(n, sequence(choices)) { (i, list) =>
+    list.apply(i)
+  }
+
+  def sortPar(parList: Par[List[Int]]): Par[List[Int]] = map(parList)(_.sorted)
 
   implicit def toParOps[A](p: Par[A]): ParOps[A] = new ParOps(p)
 

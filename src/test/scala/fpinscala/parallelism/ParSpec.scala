@@ -71,6 +71,16 @@ class ParSpec extends FlatSpec {
     sequence_simple(tasks.toList)(multipleThreads).get(2, TimeUnit.SECONDS) shouldBe expectedResult
     sequenceRight(tasks.toList)(multipleThreads).get(2, TimeUnit.SECONDS) shouldBe expectedResult
     sequenceBalanced(tasks)(multipleThreads).get(2, TimeUnit.SECONDS) shouldBe expectedResult
+    sequence(tasks.toList)(multipleThreads).get(2, TimeUnit.SECONDS) shouldBe expectedResult
+  }
+
+  it should "parFilter" in {
+    val isEven : Int => Boolean = _ % 2 == 0
+    parFilter((1 to 10).toList)(isEven)(multipleThreads).get shouldBe (1 to 10).toList.filter(isEven)
+  }
+
+  it should "choice" in {
+    choiceN(unit(1))((1 to 10).map(unit).toList)(multipleThreads).get shouldBe 2
   }
 
   private def sleep(milliseconds: Long): String = {
