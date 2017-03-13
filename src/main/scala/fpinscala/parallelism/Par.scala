@@ -73,16 +73,27 @@ object Par {
     map(sequence(parList))(_.flatten)
   }
 
+  def sortPar(parList: Par[List[Int]]): Par[List[Int]] = map(parList)(_.sorted)
+
   def choiceN[A](n: Par[Int])(choices: List[Par[A]]): Par[A] = map2(n, sequence(choices)) { (i, list) =>
     list.apply(i)
   }
-
-  def sortPar(parList: Par[List[Int]]): Par[List[Int]] = map(parList)(_.sorted)
 
   def choiceMap[K, V](key: Par[K])(choices: Map[K, Par[V]]): Par[V] = es => {
     val k = run(es)(key).get
     run(es)(choices(k))
   }
+
+  def chooser[A,B](p: Par[A])(choices: A => Par[B]): Par[B] = es => {
+    val a = run(es)(p).get
+    run(es)(choices(a))
+  }
+
+  def flatMap[A, B](p: Par[A])(choices: A => Par[B]): Par[B] = es => {
+    val a = run(es)(p).get
+    run(es)(choices(a))
+  }
+
 
   implicit def toParOps[A](p: Par[A]): ParOps[A] = new ParOps(p)
 
