@@ -79,6 +79,11 @@ object Par {
 
   def sortPar(parList: Par[List[Int]]): Par[List[Int]] = map(parList)(_.sorted)
 
+  def choiceMap[K, V](key: Par[K])(choices: Map[K, Par[V]]): Par[V] = es => {
+    val k = run(es)(key).get
+    run(es)(choices(k))
+  }
+
   implicit def toParOps[A](p: Par[A]): ParOps[A] = new ParOps(p)
 
   class ParOps[A](p: Par[A]) {

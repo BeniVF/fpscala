@@ -81,6 +81,7 @@ class ParSpec extends FlatSpec {
 
   it should "choice" in {
     choiceN(unit(1))((1 to 10).map(unit).toList)(multipleThreads).get shouldBe 2
+    choiceMap(unit("foo"))(Map("bar"->unit(3), "foo"-> unit(10)))(multipleThreads).get shouldBe 10
   }
 
   private def sleep(milliseconds: Long): String = {
